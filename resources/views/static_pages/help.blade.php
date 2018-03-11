@@ -1,11 +1,8 @@
-@extends('layouts.default');
-@section('title', 'Help');
+@extends('layouts.default')
+@section('title', '注册')
 @section('content')
-    <div class="flex-center position-ref full-height">
-        <div class="content">
-            <div class="title m-b-md">
-                It's Help
-            </div>
-        </div>
-    </div>
+<div class="jumbotron">
+    <h1>新手指引</h1>
+    <p class="lead">大家都懂的,自行修炼</p>
+</div>
 @endsection

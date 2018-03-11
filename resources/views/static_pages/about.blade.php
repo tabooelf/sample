@@ -1,11 +1,8 @@
-@extends('layouts.default');
-@section('title', 'About');
+@extends('layouts.default')
+@section('title', 'Home')
 @section('content')
-    <div class="flex-center position-ref full-height">
-        <div class="content">
-            <div class="title m-b-md">
-                It's About
-            </div>
-        </div>
-    </div>
+<div class="jumbotron">
+    <h1>关于我们</h1>
+    <p class="lead">银河系皇家</p>
+</div>
 @endsection
