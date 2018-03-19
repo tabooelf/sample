@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
     public function __construct(){
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store', 'index']
+            'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
 
         $this->middleware('guest', [
@@ -39,8 +40,8 @@ class UsersController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
-        Auth::login($user);
-        session()->flash('success','新用户注册成功,开始新的旅程吧');
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success','验证邮件已发送到你的注册邮箱上，请注意查收!');
         return redirect()->route('users.show', [$user]);
     }
 
@@ -79,5 +80,32 @@ class UsersController extends Controller
         $user->delete();
         session()->flash('success', '成功删除用户');
         return back();
+    }
+
+    public function confirmEmail($token){
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success', '恭喜您,激活成功');
+        return redirect()->route('users.show', [$user]);
+    }
+
+    protected function sendEmailConfirmationTo($user){
+        $view = 'email.confirm';
+        $data = compact('user');
+        $from = 'tabooelf@qq.com';
+        $name = 'tabooelf';
+        $to   = $user->email;
+        $subject = '感谢注册,确认您的邮箱';
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name);
+            $message->to($to);
+            $message->subject($subject);
+        });
     }
 }
