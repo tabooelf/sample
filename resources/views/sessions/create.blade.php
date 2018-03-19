@@ -20,11 +20,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">密码:</label>
+                    <label for="password">密码:(<a href="{{ route('password.request') }}">忘记密码</a>)</label>
                     <input type="password" name="password" class="form-control" value="{{ old('password') }}">
                 </div>
 
-                <div class="checkbox pull-right">
+                <div class="checkbox">
                     <label><input type="checkbox" name="remenber">记住我</label>
                 </div>
 
@@ -32,7 +32,7 @@
             </form>
 
             <hr>
-                <p>还没有账号?<a href="{{ route('signup') }}"></a></p>
+                <p>还没有账号?<a href="{{ route('signup') }}">现在注册</a></p>
         </div>
     </div>
 </div>
