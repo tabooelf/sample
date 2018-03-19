@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Status;
 use App\Notifications\ResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -28,6 +29,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function statuses(){
+        return $this->hasMany(Status::class);
+    }
+
     public static function boot(){
         parent::boot();
 
@@ -43,5 +48,10 @@ class User extends Authenticatable
     public function gravatar($size = '100'){
         $hash = md5(strtolower(trim($this->attribute['email'])));
         return "http://www.gravatar.com/avatar/$hash?s=$size";
+    }
+
+    public function feed(){
+        return $this->statuses()
+                    ->orderBy('created_at', 'desc');
     }
 }
